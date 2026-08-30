@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>しまなみかぶぬしガチャ</title>
+
+<meta property="og:title" content="しまなみかぶぬしガチャ">
+<meta property="og:description" content="当たりが出たら限定プレゼント">
+<meta property="og:image" content="https://shimanami-gacha.netlify.app/ogp.jpg">
+<meta property="og:type" content="website">
+
+<style>
+body{
+font-family:sans-serif;
+text-align:center;
+background:#009fa8;
+padding:20px;
+}
+
+h1{
+color:white;
+}
+
+.line{
+width:80%;
+max-width:350px;
+height:3px;
+background:white;
+margin:15px auto 20px auto;
+border-radius:2px;
+opacity:0.7;
+}
+
+.sub-title{
+font-size:20px;
+margin-bottom:5px;
+}
+
+.main-title{
+font-size:34px;
+font-weight:bold;
+}
+
+select{
+padding:8px;
+font-size:16px;
+margin:12px 0;
+}
+
+.gacha-button{
+width:180px;
+height:180px;
+border-radius:50%;
+cursor:pointer;
+margin-top:10px;
+}
+
+.gacha-button:active{
+transform:scale(0.95);
+}
+
+.result{
+margin-top:30px;
+font-size:22px;
+font-weight:bold;
+}
+
+.win{
+color:white;
+}
+
+.win-title{
+font-size:42px;
+font-weight:bold;
+}
+
+.lose{
+color:#eee;
+}
+
+.download-btn{
+display:inline-block;
+margin-top:15px;
+padding:12px 20px;
+background:white;
+color:#009fa8;
+font-weight:bold;
+border-radius:8px;
+text-decoration:none;
+}
+
+.gacha-note{
+color:white;
+font-size:13px;
+opacity:0.9;
+margin-top:15px;
+line-height:1.6;
+}
+
+.spin{
+animation: spin 0.6s cubic-bezier(.17,.67,.32,1.5);
+}
+
+.gacha-note{
+color:white;
+font-size:13px;
+opacity:0.9;
+margin-top:15px;
+line-height:1.6;
+}
+
+.gacha-main{
+font-size:16px;
+font-weight:bold;
+margin-bottom:5px;
+}
+
+.header-img{
+width:100%;
+max-width:450px;
+margin-bottom:5px;
+}
+
+.footer-img{
+width:100%;
+max-width:450px;
+margin-top:15px;
+}
+
+@keyframes spin{
+0%{ transform: rotate(0deg); }
+50%{ transform: rotate(180deg); }
+100%{ transform: rotate(360deg); }
+}
+</style>
+
+</head>
+
+<body>
+<img src="header.png" class="header-img">
+
+<div class="line"></div>
+
+<p>カテゴリーを選んでガチャを回そう！</p>
+
+<select id="entry">
+<option value="omishima">大三島かぶぬし（在住or大三島が好き）</option>
+<option value="shimanami">しまなみかぶぬし（大三島以外の島）</option>
+<option value="mikan">みかんかぶぬし（オレンジ好き）</option>
+<option value="lemon">レモンかぶぬし（イエロー好き）</option>
+<option value="regular">常連かぶぬし（３回以上来場）</option>
+<option value="long">遠方かぶぬし（中四国以外）</option>
+</select>
+
+
+<br>
+
+<img src="gacha.png" id="gachaBtn" class="gacha-button" onclick="draw()">
+
+<div class="result" id="result"></div>
+
+<p class="gacha-note">
+<span class="gacha-main">当たりが出たら待受画像をプレゼント！</span><br>
+シークレット画像もあるかも？
+</p>
+<img src="footer.png" class="footer-img">
+
+<script>
+
+function draw(){
+
+let btn = document.getElementById("gachaBtn");
+
+btn.classList.add("spin");
+btn.style.pointerEvents = "none";
+
+setTimeout(()=>{
+btn.classList.remove("spin");
+btn.style.pointerEvents = "auto";
+},600);
+
+let entry = document.getElementById("entry").value;
+let result = document.getElementById("result");
+
+//5回に1回当たり
+let win = Math.random() < 0.2;
+
+//シークレット（当たりの中で10%）
+let special = Math.random() < 0.1;
+
+if(win){
+
+let fileName="";
+let title="＼当たり／";
+
+//シークレット当たり
+if(special){
+fileName="special.png";
+title="＼シークレット当たり！／";
+
+}else{
+
+if(entry=="omishima") fileName="omishima.png";
+if(entry=="shimanami") fileName="shimanami.png";
+if(entry=="mikan") fileName="mikan.png";
+if(entry=="lemon") fileName="lemon.png";
+if(entry=="regular") fileName="perfect_attendance.png";
+if(entry=="long") fileName="long_distance.png";
+}
+
+result.innerHTML=
+"<span class='win-title'>"+title+"</span><br><br>"+
+"<a class='download-btn' href='"+fileName+"'>"+
+"待受画像を開く"+
+"</a><br><small>長押しで保存</small>";
+
+result.className="result win";
+
+}else{
+
+result.innerHTML="はずれ";
+result.className="result lose";
+
+}
+
+}
+
+</script>
+
+</body>
+</html>
