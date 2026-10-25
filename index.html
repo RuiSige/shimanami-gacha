@@ -166,67 +166,73 @@ margin-top:15px;
 </p>
 <img src="footer.png" class="footer-img">
 
-<script>
 
+<script>
 function draw(){
 
-let btn = document.getElementById("gachaBtn");
+  let btn = document.getElementById("gachaBtn");
+  let result = document.getElementById("result");
+  let entry = document.getElementById("entry").value;
 
-btn.classList.add("spin");
-btn.style.pointerEvents = "none";
+  // 回転中は操作できないようにする
+  btn.style.pointerEvents = "none";
+  result.innerHTML = "";
+  result.className = "result";
 
-setTimeout(()=>{
-btn.classList.remove("spin");
-btn.style.pointerEvents = "auto";
-},600);
+  // 回転開始
+  btn.classList.remove("spin");
+  void btn.offsetWidth;
+  btn.classList.add("spin");
 
-let entry = document.getElementById("entry").value;
-let result = document.getElementById("result");
+  // 回転終了後に抽選結果を表示
+  setTimeout(()=>{
 
-//5回に1回当たり
-let win = Math.random() < 0.2;
+    btn.classList.remove("spin");
+    btn.style.pointerEvents = "auto";
 
-//シークレット（当たりの中で10%）
-let special = Math.random() < 0.1;
+    // 5回に1回当たり
+    let win = Math.random() < 0.2;
 
-if(win){
+    // シークレット（当たりの中で10%）
+    let special = Math.random() < 0.1;
 
-let fileName="";
-let title="＼当たり／";
+    if(win){
 
-//シークレット当たり
-if(special){
-fileName="special.png";
-title="＼シークレット当たり！／";
+      let fileName = "";
+      let title = "＼当たり／";
 
-}else{
+      if(special){
+        fileName = "special.png";
+        title = "＼シークレット当たり！／";
+      }else{
+        if(entry=="omishima") fileName="omishima.png";
+        if(entry=="shimanami") fileName="shimanami.png";
+        if(entry=="mikan") fileName="mikan.png";
+        if(entry=="lemon") fileName="lemon.png";
+        if(entry=="regular") fileName="perfect_attendance.png";
+        if(entry=="long") fileName="long_distance.png";
+      }
 
-if(entry=="omishima") fileName="omishima.png";
-if(entry=="shimanami") fileName="shimanami.png";
-if(entry=="mikan") fileName="mikan.png";
-if(entry=="lemon") fileName="lemon.png";
-if(entry=="regular") fileName="perfect_attendance.png";
-if(entry=="long") fileName="long_distance.png";
+      result.innerHTML =
+        "<span class='win-title'>"+title+"</span><br><br>"+
+        "<a class='download-btn' href='"+fileName+"'>"+
+        "待受画像を開く"+
+        "</a><br><small>長押しで保存</small>";
+
+      result.className = "result win";
+
+    }else{
+
+      result.innerHTML = "はずれ";
+      result.className = "result lose";
+
+    }
+
+  },600);
+
 }
-
-result.innerHTML=
-"<span class='win-title'>"+title+"</span><br><br>"+
-"<a class='download-btn' href='"+fileName+"'>"+
-"待受画像を開く"+
-"</a><br><small>長押しで保存</small>";
-
-result.className="result win";
-
-}else{
-
-result.innerHTML="はずれ";
-result.className="result lose";
-
-}
-
-}
-
 </script>
+
 
 </body>
 </html>
